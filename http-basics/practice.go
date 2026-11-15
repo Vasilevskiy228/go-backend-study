@@ -4,13 +4,17 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("POST /songs/preview", songPreviewHandler1)
+	mux.HandleFunc("POST /songs/preview", songPreviewHandler)
+
+	log.Println("Сервер запущен на порту:8080")
+	log.Fatal(http.ListenAndServe(":8080", mux))
 
 }
 
@@ -26,6 +30,9 @@ func songPreviewHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid json body", http.StatusBadRequest)
 		return
 	}
+
+	input.Artist = strings.TrimSpace(input.Artist)
+	input.Title = strings.TrimSpace(input.Title)
 
 	if input.Artist == "" || input.Title == "" {
 		http.Error(w, "title or artist are required", http.StatusBadRequest)

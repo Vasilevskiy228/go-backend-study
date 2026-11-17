@@ -16,7 +16,7 @@ func TestSongPreviewHandler(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	songPreviewHandler(rec, req)
+	songPreviewHandler(&SongService{})(rec, req)
 
 	if rec.Code != http.StatusOK {
 		t.Fatalf("Ожидали статус 200, получили: %d", rec.Code)
@@ -78,7 +78,7 @@ func TestSongPreviewHandlerBadRequests(t *testing.T) {
 
 			rec := httptest.NewRecorder()
 
-			songPreviewHandler(rec, req)
+			songPreviewHandler(&SongService{})(rec, req)
 
 			if rec.Code != http.StatusBadRequest {
 				t.Fatalf("ожидали 400, получили %d", rec.Code)
